@@ -20,10 +20,9 @@ This backend handles authentication, course management, and user enrollment, wit
 
 ## 🔐 Security Features
 
-- **JWT Authentication** → protects routes with token-based access control.  
-- **Bcrypt Password Hashing** → stores passwords securely using hashing + salting.  
-- **Zod Validation** → ensures request bodies are validated before hitting controllers.  
-- **Environment Variables** → sensitive data (DB URI, JWT secret, etc.) are never hardcoded.  
+- **JWT Authentication** → protects routes with token-based access control.
+- **Bcrypt Password Hashing** → stores passwords securely using hashing + salting.
+- **Zod Validation** → ensures request bodies are validated before hitting controllers.
+- **Environment Variables** → sensitive data (DB URI, JWT secret, etc.) are never hardcoded.
 
---------------------------------------------------------------------------------------------------
-
+---
