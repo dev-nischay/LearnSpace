@@ -1,6 +1,6 @@
 This is a course-selling website backend which uses :- <br/>
 SECURITY:-
-    1.JWT
+    1.JWT <br/>
     2.Bcrypt
     
 SERVER:-
