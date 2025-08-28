@@ -1,4 +1,4 @@
-This is a course-selling website backend which uses :-
+This is a course-selling website backend which uses :- <br/>
 SECURITY:-
     1.JWT
     2.Bcrypt
