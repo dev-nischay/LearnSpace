@@ -15,11 +15,9 @@ app.use(express.json());
 app.use("/admin", adminRouter);
 app.use("/users", userRouter);
 
-// app.all("*", (req, res, next) => {
-//   next(new AppError("Invalid Route", 404));
-// });
-
-app.use(errorHandler);
+app.all("*", (req, res, next) => {
+  next(new AppError("Invalid Route", 404));
+});
 
 app.listen(PORT, async () => {
   await connectDB();

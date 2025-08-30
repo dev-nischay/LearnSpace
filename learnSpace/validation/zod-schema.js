@@ -1,4 +1,5 @@
 import { z } from "zod";
+import checkEmpty from "../utils/checkEmpty.js";
 
 export const signUpSchema = z.object({
   username: z
@@ -21,17 +22,21 @@ export const urlValidator = z.object({
 });
 
 export const purchaseCourse = z.object({
-  title: z.string(),
-  description: z.string(),
-  price: z.string(),
+  title: z.string().max(24, "Title too long!"),
+  description: z.string().min(1, "description cannot be empty"),
+  price: z.string().max(5, "Invalid Price"),
   isPublished: z.string(),
 });
 
-// export const updateCourse = z.object({
-//   title:z.string(),
-//   description:z.string(),
-//   price:z.string(),
-//   isPublished:z.string()
-// }) => use refine  cause these all are optional to update
+export const updateCourse = z
+  .object({
+    title: z.string(),
+    description: z.string(),
+    price: z.string(),
+    isPublished: z.string(),
+  })
+  .refine((data) => checkEmpty(data), {
+    message: "data cannot be empty",
+  });
 
-// publishCourse,delCourse will be validated through url validator as they dont require any body to validate
+// no schema's for delCourse and publishCourse as they dont require any body but id
