@@ -1,7 +1,5 @@
 import { Course } from "../modals/course.js";
 import AppError from "../utils/AppError.js";
-import jwt from "jsonwebtoken";
-let secret = process.env.secret;
 
 export const createCourse = async (req, res, next) => {
   let { title, description, price } = req.validatedBody;
@@ -38,13 +36,51 @@ export const publishCourse = async (req, res, next) => {
 };
 
 export const updateCourse = async (req, res, next) => {
-  // update a course
+  let courseId = req.validatedParams;
+  let update = req.validatedBody;
+
+  let updateData = await Course.findOneAndUpdate(
+    { _id: courseId },
+    { update },
+    { new: true }
+  );
+  if (!updateData) {
+    return next(new AppError("Invalid Course Id \n Course not found ", 404));
+  }
+
+  res.status(200).json({
+    status: true,
+    message: "Course Updated!!!",
+  });
 };
 
 export const delCourse = async (req, res, next) => {
-  // del course
+  let courseId = req.validatedParams;
+
+  let Delete = await Course.findOneAndDelete(
+    {
+      _id: courseId,
+    },
+    { new: true }
+  );
+  if (!Delete) {
+    return next(new AppError("Invalid Course Id \n Course not found ", 404));
+  }
+  res.status(200).json({
+    status: false,
+    message: "Course Deleted!",
+  });
 };
 
 export const getAllCourse = async (req, res, next) => {
-  // get all the courses
+  let courseId = req.validatedParams;
+
+  const Available = await Course.find({ _id: courseId }, { new: true });
+  if (Available.length === 0) {
+    return next(new AppError("no courses to display", 400));
+  }
+  res.status(200).json({
+    status: true,
+    message: Available,
+  });
 };
