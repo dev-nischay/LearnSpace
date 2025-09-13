@@ -18,6 +18,10 @@ let courseSchema = new Schema({
     required: true,
     type: Boolean,
   },
+  createdBy: {
+    required: true,
+    type: mongoose.ObjectId,
+  },
 });
 
 export const Course = new mongoose.model("course", courseSchema);
