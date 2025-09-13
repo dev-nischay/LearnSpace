@@ -1,9 +1,19 @@
 import { Router } from "express";
 const courseRouter = Router();
-import { Validate } from "../middlewares/validator";
-import { signInSchema } from "../validation/zod-schema";
+import { Validate } from "../middlewares/validator.js";
+import {
+  createCourseSchema,
+  updateCourseSchema,
+  urlValidator,
+} from "../validation/zod-schema.js";
 import asyncHandler from "express-async-handler";
-import { createCourse } from "../controllers/course-controller";
+import {
+  createCourse,
+  publishCourse,
+  updateCourse,
+  delCourse,
+  getAllCourse,
+} from "../controllers/course-controller.js";
 
 courseRouter.post(
   "/",
@@ -11,13 +21,14 @@ courseRouter.post(
   asyncHandler(createCourse)
 );
 courseRouter
-  .route("/courseId")
+  .route("/:id")
   .put(
-    Validate(urlSchema),
+    Validate(urlValidator, "params"),
     Validate(updateCourseSchema),
     asyncHandler(updateCourse)
   )
-  .patch(Validate(urlSchema), asyncHandler(publishCourse))
-  .delete(Validate(urlSchema), asyncHandler(deleteCourse));
+  .patch(Validate(urlValidator, "params"), asyncHandler(publishCourse))
+  .delete(Validate(urlValidator, "params"), asyncHandler(delCourse))
+  .get((Validate(urlValidator, "params"), asyncHandler(getAllCourse)));
 
 export default courseRouter;
