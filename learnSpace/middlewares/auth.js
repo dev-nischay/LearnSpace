@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import AppError from "../utils/AppError.js";
-const secret = process.env.secert;
+const secret = process.env.secret;
 
 const Verify = (token) => {
   return new Promise((resolve, reject) => {
@@ -18,6 +18,7 @@ export const auth = async (req, res, next) => {
   const token = auth.split(" ")[1];
 
   if (!token) return next(new AppError("Token is missing", 401));
+
   try {
     const decode = await Verify(token);
     req.user = decode;
