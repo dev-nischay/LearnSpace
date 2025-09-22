@@ -1,29 +1,35 @@
 import { Course } from "../modals/course.js";
+import { Admin } from "../modals/admin.js";
 import AppError from "../utils/AppError.js";
 
 export const createCourse = async (req, res, next) => {
   let { title, description, price } = req.validatedBody;
+  const isAdmin = await Admin.findOne({ _id: req.user.token });
 
-  const Course = await Course.create({
+  if (!isAdmin) {
+    next(new AppError("Unauthorized Acesss", 409));
+  }
+
+  const course = await Course.create({
     title,
     description,
     price,
     isPublished: false,
+    createdBy: req.user.token,
   });
 
   res.json({
     status: true,
-    courseId: Course._id, // for now sending ids for testing later will shift to a normal response
+    courseId: course._id, // for now sending ids for testing later will shift to a normal response
   });
-  next();
 };
 
 export const publishCourse = async (req, res, next) => {
-  let courseId = req.validatedParams;
+  let courseId = req.validatedParams.id;
 
   const findCourse = await Course.findOneAndUpdate(
-    { _id: courseId },
-    { isPublished: true },
+    { _id: courseId, createdBy: req.user.token },
+    { $set: { isPublished: true } },
     { new: true }
   );
   if (!findCourse) {
@@ -36,12 +42,12 @@ export const publishCourse = async (req, res, next) => {
 };
 
 export const updateCourse = async (req, res, next) => {
-  let courseId = req.validatedParams;
+  let courseId = req.validatedParams.id;
   let update = req.validatedBody;
 
   let updateData = await Course.findOneAndUpdate(
-    { _id: courseId },
-    { update },
+    { _id: courseId, createdBy: req.user.token },
+    { $set: update },
     { new: true }
   );
   if (!updateData) {
@@ -55,11 +61,12 @@ export const updateCourse = async (req, res, next) => {
 };
 
 export const delCourse = async (req, res, next) => {
-  let courseId = req.validatedParams;
+  let courseId = req.validatedParams.id;
 
   let Delete = await Course.findOneAndDelete(
     {
       _id: courseId,
+      createdBy: req.user.token,
     },
     { new: true }
   );
@@ -75,7 +82,10 @@ export const delCourse = async (req, res, next) => {
 export const getAllCourse = async (req, res, next) => {
   let courseId = req.validatedParams;
 
-  const Available = await Course.find({ _id: courseId }, { new: true });
+  const Available = await Course.find(
+    { _id: courseId, createdBy: req.user.token },
+    { new: true }
+  );
   if (Available.length === 0) {
     return next(new AppError("no courses to display", 400));
   }

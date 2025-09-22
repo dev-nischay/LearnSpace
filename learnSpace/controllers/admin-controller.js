@@ -42,6 +42,7 @@ export const login = async (req, res, next) => {
     },
     secret
   );
+  //check for role in frontend
   res.json({
     status: true,
     message: "Login Successfull!!",
