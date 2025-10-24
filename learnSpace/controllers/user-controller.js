@@ -108,6 +108,7 @@ export const userPurchases = async (req, res, next) => {
   });
 };
 
+// add refs here 
 //fix the last route when free
 // i think the problem is that we are getting all the courses that user purchased and to get the course info
 
