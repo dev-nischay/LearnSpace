@@ -38,7 +38,7 @@ build/
 .cache/
 .next/
 out/
-
+tsconfig.tsbuildinfo
 
 .idea/
 .vscode/
