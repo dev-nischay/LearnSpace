@@ -3,9 +3,10 @@ import { Admin } from "../modals/admin.js";
 import AppError from "../utils/AppError.js";
 
 export const createCourse = async (req, res, next) => {
-  let { title, description, price } = req.validatedBody;
+  const { title, description, price } = req.validatedBody;
 
   const course = await Course.create({
+    // add image latere here
     title,
     description,
     price,
@@ -20,10 +21,10 @@ export const createCourse = async (req, res, next) => {
 };
 
 export const publishCourse = async (req, res, next) => {
-  let courseId = req.validatedParams.id;
+  const courseId = req.validatedParams.id;
 
   const findCourse = await Course.findOneAndUpdate(
-    { _id: courseId, createdBy: req.user.token },
+    { _id: courseId, createdBy: req.token.id },
     { $set: { isPublished: true } },
     { new: true }
   );
@@ -37,11 +38,11 @@ export const publishCourse = async (req, res, next) => {
 };
 
 export const updateCourse = async (req, res, next) => {
-  let courseId = req.validatedParams.id;
-  let update = req.validatedBody;
+  const courseId = req.validatedParams.id;
+  const update = req.validatedBody;
 
-  let updateData = await Course.findOneAndUpdate(
-    { _id: courseId, createdBy: req.user.token },
+  const updateData = await Course.findOneAndUpdate(
+    { _id: courseId, createdBy: req.token.id },
     { $set: update },
     { new: true }
   );
@@ -56,12 +57,12 @@ export const updateCourse = async (req, res, next) => {
 };
 
 export const delCourse = async (req, res, next) => {
-  let courseId = req.validatedParams.id;
+  const courseId = req.validatedParams.id;
 
-  let Delete = await Course.findOneAndDelete(
+  const Delete = await Course.findOneAndDelete(
     {
       _id: courseId,
-      createdBy: req.user.token,
+      createdBy: req.token.id,
     },
     { new: true }
   );
@@ -75,15 +76,11 @@ export const delCourse = async (req, res, next) => {
 };
 
 export const getAllCourse = async (req, res, next) => {
-  let userId = req.user.token;
-  console.log(courseId);
-  console.log(req.validatedBody);
-  console.log(req.validatedParams);
+  const adminId = req.token.id;
 
-  const Available = await Course.find(
-    { _id: courseId, createdBy: req.user.token },
-    { new: true }
-  );
+  const courseCreated = await Course.find({
+    $in: { createdBy: adminId },
+  }).populate("courseId");
   if (Available.length === 0) {
     return next(new AppError("no courses to display", 400));
   }
