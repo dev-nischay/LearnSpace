@@ -4,18 +4,13 @@ import AppError from "../utils/AppError.js";
 
 export const createCourse = async (req, res, next) => {
   let { title, description, price } = req.validatedBody;
-  const isAdmin = await Admin.findOne({ _id: req.user.token });
-
-  if (!isAdmin) {
-    next(new AppError("Unauthorized Acesss", 409));
-  }
 
   const course = await Course.create({
     title,
     description,
     price,
     isPublished: false,
-    createdBy: req.user.token,
+    createdBy: req.token.id,
   });
 
   res.json({
@@ -80,7 +75,10 @@ export const delCourse = async (req, res, next) => {
 };
 
 export const getAllCourse = async (req, res, next) => {
-  let courseId = req.validatedParams;
+  let userId = req.user.token;
+  console.log(courseId);
+  console.log(req.validatedBody);
+  console.log(req.validatedParams);
 
   const Available = await Course.find(
     { _id: courseId, createdBy: req.user.token },

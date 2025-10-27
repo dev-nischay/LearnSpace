@@ -6,9 +6,10 @@ import { register, login } from "../controllers/admin-controller.js";
 import asyncHandler from "express-async-handler";
 import { auth } from "../middlewares/auth.js";
 import courseRouter from "./course-router.js";
+import { isAdmin } from "../middlewares/auth.js";
 adminRouter.post("/signup", Validate(signUpSchema), asyncHandler(register));
 adminRouter.post("/signin", Validate(signInSchema), asyncHandler(login));
 
-adminRouter.use("/courses", auth, courseRouter);
+adminRouter.use("/courses", auth, isAdmin, courseRouter);
 
 export default adminRouter;

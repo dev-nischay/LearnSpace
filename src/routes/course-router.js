@@ -19,16 +19,16 @@ courseRouter.post(
   "/",
   Validate(createCourseSchema),
   asyncHandler(createCourse)
-);
+); //working
 courseRouter
   .route("/:id")
   .put(
     Validate(urlValidator, "params"),
     Validate(updateCourseSchema),
-    asyncHandler(updateCourse)
+    asyncHandler(updateCourse) // working
   )
-  .patch(Validate(urlValidator, "params"), asyncHandler(publishCourse))
-  .delete(Validate(urlValidator, "params"), asyncHandler(delCourse))
-  .get((Validate(urlValidator, "params"), asyncHandler(getAllCourse)));
+  .patch(Validate(urlValidator, "params"), asyncHandler(publishCourse)) //working
+  .delete(Validate(urlValidator, "params"), asyncHandler(delCourse)) //working
+  .get(Validate(urlValidator, "params"), asyncHandler(getAllCourse));
 
 export default courseRouter;

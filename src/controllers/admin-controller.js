@@ -5,9 +5,9 @@ import jwt from "jsonwebtoken";
 let secret = process.env.secret;
 
 export const register = async (req, res, next) => {
-  let { username, password } = req.validatedBody;
+  const { username, password } = req.validatedBody;
 
-  let existing = await Admin.findOne({ username });
+  const existing = await Admin.findOne({ username });
   if (existing) {
     return next(new AppError("Admin already exits", 409));
   }
@@ -25,8 +25,8 @@ export const register = async (req, res, next) => {
 };
 
 export const login = async (req, res, next) => {
-  let { username, password } = req.validatedBody;
-  let response = await Admin.findOne({ username });
+  const { username, password } = req.validatedBody;
+  const response = await Admin.findOne({ username });
   if (!response) {
     return next(new AppError("Admin not found", 404));
   }
@@ -35,9 +35,9 @@ export const login = async (req, res, next) => {
     return next(new AppError("Incorrect Password", 401));
   }
 
-  let token = jwt.sign(
+  const token = jwt.sign(
     {
-      token: response._id,
+      id: response._id,
       role: "Admin",
     },
     secret
