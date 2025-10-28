@@ -15,4 +15,6 @@ export enum HttpStatus {
   Forbidden = 409,
   InternalServerError = 500,
   Ok = 200,
+  Unauthorized = 401,
+  BadRequest = 400,
 }

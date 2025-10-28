@@ -6,7 +6,10 @@ export const urlValidator = z.object({
 });
 
 export const createCourseSchema = z.object({
-  title: z.string().max(24, "Title too long!"),
+  title: z
+    .string()
+    .min(1, "description cannot be empty")
+    .max(24, "Title too long!"),
   description: z.string().min(1, "description cannot be empty"),
   price: z.string().max(5, "Invalid Price"),
 });
@@ -18,7 +21,7 @@ export const updateCourseSchema = z
     price: z.string(),
   })
   .refine((data) => checkEmpty(data), {
-    message: "data cannot be empty",
+    message: "Changes cannot be empty",
   });
 
 export type createBody = z.infer<typeof createCourseSchema>;

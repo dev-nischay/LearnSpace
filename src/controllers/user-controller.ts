@@ -6,6 +6,7 @@ import jwt from "jsonwebtoken";
 import { Purchases } from "../models/purchasedCourses.js";
 import type { Response, Request, NextFunction } from "express";
 import type { authBody } from "../validation/auth-schema.js";
+import { HttpStatus } from "../types/enums.js";
 const secret = process.env.secret;
 export const userRegister = async (
   req: Request,
@@ -26,7 +27,7 @@ export const userRegister = async (
     password: hashedPass,
   });
 
-  res.status(200).json({
+  res.status(HttpStatus.Ok).json({
     status: true,
     message: "Account Created!!!",
   });
@@ -41,13 +42,13 @@ export const userLogin = async (
   const response = await User.findOne({ username });
 
   if (!response) {
-    return next(new AppError("User not Found", 404));
+    return next(new AppError("User not Found", HttpStatus.NotFound));
   }
 
   const checkPassword = await bcrypt.compare(password, response.password);
 
   if (!checkPassword) {
-    return next(new AppError("Incorrect Password", 401));
+    return next(new AppError("Incorrect Password", HttpStatus.BadRequest));
   }
 
   const token = jwt.sign(
@@ -72,10 +73,12 @@ export const availableCourses = async (
   const courses = await Course.find().select("-isPublished -__v");
 
   if (courses.length === 0) {
-    return next(new AppError("no course available to display", 404));
+    return next(
+      new AppError("no course available to display", HttpStatus.NotFound)
+    );
   }
 
-  res.status(200).json({
+  res.status(HttpStatus.Ok).json({
     status: true,
     courses,
     message: "Available Courses",
@@ -92,7 +95,7 @@ export const purchase = async (
 
   let course = await Course.findOne({ _id: courseId });
   if (!course) {
-    return next(new AppError("Course not found", 404));
+    return next(new AppError("Course not found", HttpStatus.NotFound));
   }
 
   await Purchases.create({
@@ -101,7 +104,7 @@ export const purchase = async (
     creatorId: course.createdBy,
   });
 
-  res.status(200).json({
+  res.status(HttpStatus.Ok).json({
     status: true,
     message: `Succesfully Purchased ${course.title}!`,
   });
@@ -116,7 +119,7 @@ export const userPurchases = async (
 
   const purchases = await Purchases.find({ userId });
   if (purchases.length === 0) {
-    return next(new AppError("No Purchases", 404));
+    return next(new AppError("No Purchases", HttpStatus.NotFound));
   }
   const ids = purchases.map((e) => e.courseId);
 
@@ -124,7 +127,7 @@ export const userPurchases = async (
     _id: { $in: ids },
   }).select("-_id -isPublished -__v");
 
-  res.status(200).json({
+  res.status(HttpStatus.Ok).json({
     status: true,
     purchasedCourses,
   });

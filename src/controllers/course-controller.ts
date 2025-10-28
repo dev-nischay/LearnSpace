@@ -4,6 +4,7 @@ import AppError from "../utils/AppError.js";
 import type { Request, Response, NextFunction } from "express";
 import type { createBody } from "../validation/course-schema.js";
 import type { Update } from "../types/constants.js";
+import { HttpStatus } from "../types/enums.js";
 export const createCourse = async (
   req: Request,
   res: Response,
@@ -38,9 +39,9 @@ export const publishCourse = async (
     { new: true }
   );
   if (!findCourse) {
-    return next(new AppError("Course Not Found", 404));
+    return next(new AppError("Course Not Found", HttpStatus.NotFound));
   }
-  res.status(200).json({
+  res.status(HttpStatus.Ok).json({
     status: true,
     message: "Course Published",
   });
@@ -60,10 +61,12 @@ export const updateCourse = async (
     { new: true }
   );
   if (!updateData) {
-    return next(new AppError("Invalid Course Id  Course not found ", 404));
+    return next(
+      new AppError("Invalid Course Id  Course not found ", HttpStatus.NotFound)
+    );
   }
 
-  res.status(200).json({
+  res.status(HttpStatus.Ok).json({
     status: true,
     message: "Course Updated",
   });
@@ -89,12 +92,12 @@ export const delCourse = async (
       new AppError(
         `Invalid Course Id 
          Course not found `,
-        404
+        HttpStatus.NotFound
       )
     );
   }
 
-  res.status(200).json({
+  res.status(HttpStatus.Ok).json({
     status: false,
     message: "Course Deleted",
   });
@@ -113,7 +116,7 @@ export const getAllCourse = async (
 
   // this will work after refs are implemented
 
-  res.status(200).json({
+  res.status(HttpStatus.Ok).json({
     status: true,
     message: "Content Found",
     allcourses: courseCreated,

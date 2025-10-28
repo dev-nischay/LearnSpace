@@ -6,7 +6,7 @@ declare namespace Express {
     };
     validatedBody: unknown;
     validatedParams: {
-      id: string;
+      id?: string;
     };
     validatedQuery: unknown;
   }

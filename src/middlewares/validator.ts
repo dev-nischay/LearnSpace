@@ -1,7 +1,7 @@
 import AppError from "../utils/AppError.js";
 import type { Request, Response, NextFunction } from "express";
 import type { ZodType } from "zod";
-import { Source } from "../types/enums.js";
+import { HttpStatus, Source } from "../types/enums.js";
 import { targetMap } from "../types/enums.js";
 export const Validate = (schema: ZodType, source: Source = Source.body) => {
   return (req: Request, res: Response, next: NextFunction) => {
@@ -11,7 +11,7 @@ export const Validate = (schema: ZodType, source: Source = Source.body) => {
     if (!parsedData.success) {
       let errors = parsedData?.error?.issues.map((e) => e.message);
       console.log(errors);
-      return next(new AppError(String(errors), 400));
+      return next(new AppError(String(errors), HttpStatus.BadRequest));
     }
     // format validation errors later
 

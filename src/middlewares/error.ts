@@ -1,5 +1,6 @@
 import type { Request, Response, NextFunction } from "express";
 import AppError from "../utils/AppError.js";
+import { HttpStatus } from "../types/enums.js";
 
 export const errorHandler = (
   err: unknown,
@@ -8,7 +9,7 @@ export const errorHandler = (
   next: NextFunction
 ) => {
   if (err instanceof AppError) {
-    let statusCode = err.statusCode || 500;
+    let statusCode = err.statusCode || HttpStatus.InternalServerError;
 
     if (err.isOperational) {
       return res.status(statusCode).json({
