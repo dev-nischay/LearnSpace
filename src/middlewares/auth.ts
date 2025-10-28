@@ -14,6 +14,7 @@ const Verify = (token: string) => {
 
 export const auth = async (req: Request, res: Response, next: NextFunction) => {
   const auth = req.headers.authorization;
+
   if (!auth || !auth.startsWith("Bearer")) {
     return next(new AppError("Invalid or missing Authorization header", 401));
   }
@@ -25,20 +26,12 @@ export const auth = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const decode = (await Verify(token)) as Payload;
 
-    req.token = decode; // do it to token later
+    req.token = decode;
+    console.log(decode);
     res.status(200);
     next();
   } catch (error: any) {
     console.error(error.message);
     next(new AppError("Authoization Failed", 500));
   }
-};
-
-export const isAdmin = (req: Request, res: Response, next: NextFunction) => {
-  const creds = req.token?.role;
-  if (!creds) {
-    return next(new AppError("Unauthorized Acess", 409));
-  }
-
-  res.status(200);
 };
