@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Types } from "mongoose";
 const Schema = mongoose.Schema;
 
 let courseSchema = new Schema({
@@ -20,8 +20,9 @@ let courseSchema = new Schema({
   },
   createdBy: {
     required: true,
-    type: mongoose.ObjectId,
+    type: Types.ObjectId,
+    ref: "admin",
   },
 });
 
-export const Course = new mongoose.model("course", courseSchema);
+export const Course = mongoose.model("course", courseSchema);
