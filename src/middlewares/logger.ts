@@ -1,6 +1,8 @@
 import chalk from "chalk";
 
-const logger = (req, res, next) => {
+import type { Request, Response, NextFunction } from "express";
+
+const logger = (req: Request, res: Response, next: NextFunction) => {
   const method = chalk.blue.bold(req.method);
   const url = chalk.green(req.originalUrl);
   const status = chalk.yellow(res.statusCode);
