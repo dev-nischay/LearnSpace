@@ -1,11 +1,17 @@
 import bcrypt from "bcrypt";
-import { Admin } from "../modals/admin.js";
+import { Admin } from "../models/admin.js";
 import AppError from "../utils/AppError.js";
 import jwt from "jsonwebtoken";
-let secret = process.env.secret;
+import type { Request, Response, NextFunction } from "express";
+import type { authBody } from "../validation/auth-schema.js";
+const secret = process.env.secret;
 
-export const register = async (req, res, next) => {
-  const { username, password } = req.validatedBody;
+export const register = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { username, password } = req.validatedBody as authBody;
 
   const existing = await Admin.findOne({ username });
   if (existing) {
@@ -24,8 +30,12 @@ export const register = async (req, res, next) => {
   });
 };
 
-export const login = async (req, res, next) => {
-  const { username, password } = req.validatedBody;
+export const login = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { username, password } = req.validatedBody as authBody;
   const response = await Admin.findOne({ username });
   if (!response) {
     return next(new AppError("Admin not found", 404));
@@ -40,7 +50,7 @@ export const login = async (req, res, next) => {
       id: response._id,
       role: "Admin",
     },
-    secret
+    secret as string
   );
   //check for role in frontend
   res.json({

@@ -1,5 +1,5 @@
 import z from "zod";
-export const signUpSchema = z.object({
+export const authSchema = z.object({
   username: z
     .string()
     .min(2, "username must be 2 characters long")
@@ -10,4 +10,4 @@ export const signUpSchema = z.object({
     .max(24, "password cannot be more than 16 characters"),
 });
 
-export type authBody = z.infer<typeof signUpSchema>;
+export type authBody = z.infer<typeof authSchema>;

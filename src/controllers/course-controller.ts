@@ -1,10 +1,15 @@
-import { Course } from "../modals/course.js";
-import { Admin } from "../modals/admin.js";
+import { Course } from "../models/course.js";
+import { Admin } from "../models/admin.js";
 import AppError from "../utils/AppError.js";
-
-export const createCourse = async (req, res, next) => {
-  const { title, description, price } = req.validatedBody;
-
+import type { Request, Response, NextFunction } from "express";
+import type { createBody } from "../validation/course-schema.js";
+import type { Update } from "../types/constants.js";
+export const createCourse = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { title, description, price } = req.validatedBody as createBody;
   const course = await Course.create({
     // add image latere here
     title,
@@ -20,7 +25,11 @@ export const createCourse = async (req, res, next) => {
   });
 };
 
-export const publishCourse = async (req, res, next) => {
+export const publishCourse = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const courseId = req.validatedParams.id;
 
   const findCourse = await Course.findOneAndUpdate(
@@ -33,13 +42,17 @@ export const publishCourse = async (req, res, next) => {
   }
   res.status(200).json({
     status: true,
-    message: "Course Published!!",
+    message: "Course Published",
   });
 };
 
-export const updateCourse = async (req, res, next) => {
+export const updateCourse = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const courseId = req.validatedParams.id;
-  const update = req.validatedBody;
+  const update = req.validatedBody as Update;
 
   const updateData = await Course.findOneAndUpdate(
     { _id: courseId, createdBy: req.token.id },
@@ -47,16 +60,20 @@ export const updateCourse = async (req, res, next) => {
     { new: true }
   );
   if (!updateData) {
-    return next(new AppError("Invalid Course Id \n Course not found ", 404));
+    return next(new AppError("Invalid Course Id  Course not found ", 404));
   }
 
   res.status(200).json({
     status: true,
-    message: "Course Updated!!!",
+    message: "Course Updated",
   });
 };
 
-export const delCourse = async (req, res, next) => {
+export const delCourse = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const courseId = req.validatedParams.id;
 
   const Delete = await Course.findOneAndDelete(
@@ -66,26 +83,39 @@ export const delCourse = async (req, res, next) => {
     },
     { new: true }
   );
+
   if (!Delete) {
-    return next(new AppError("Invalid Course Id \n Course not found ", 404));
+    return next(
+      new AppError(
+        `Invalid Course Id 
+         Course not found `,
+        404
+      )
+    );
   }
+
   res.status(200).json({
     status: false,
-    message: "Course Deleted!",
+    message: "Course Deleted",
   });
 };
 
-export const getAllCourse = async (req, res, next) => {
+export const getAllCourse = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const adminId = req.token.id;
 
   const courseCreated = await Course.find({
     $in: { createdBy: adminId },
   }).populate("courseId");
-  if (Available.length === 0) {
-    return next(new AppError("no courses to display", 400));
-  }
+
+  // this will work after refs are implemented
+
   res.status(200).json({
     status: true,
-    message: Available,
+    message: "Content Found",
+    allcourses: courseCreated,
   });
 };

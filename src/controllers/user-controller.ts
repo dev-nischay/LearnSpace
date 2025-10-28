@@ -1,16 +1,22 @@
-import { Course } from "../modals/course.js";
-import { User } from "../modals/user.js";
+import { Course } from "../models/course.js";
+import { User } from "../models/user.js";
 import AppError from "../utils/AppError.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { Purchases } from "../modals/purchasedCourses.js";
+import { Purchases } from "../models/purchasedCourses.js";
+import type { Response, Request, NextFunction } from "express";
+import type { authBody } from "../validation/auth-schema.js";
 const secret = process.env.secret;
-export const userRegister = async (req, res, next) => {
-  const { username, password } = req.validatedBody;
+export const userRegister = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { username, password } = req.validatedBody as authBody;
 
   const existing = await User.findOne({ username });
   if (existing) {
-    return next(AppError("User alredy exists", 409));
+    return next(new AppError("User alredy exists", 409));
   }
 
   const hashedPass = await bcrypt.hash(password, 8);
@@ -26,12 +32,16 @@ export const userRegister = async (req, res, next) => {
   });
 };
 
-export const userLogin = async (req, res, next) => {
-  const { username, password } = req.validatedBody;
+export const userLogin = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { username, password } = req.validatedBody as authBody;
   const response = await User.findOne({ username });
 
   if (!response) {
-    return new AppError("User not Found", 404);
+    return next(new AppError("User not Found", 404));
   }
 
   const checkPassword = await bcrypt.compare(password, response.password);
@@ -44,7 +54,7 @@ export const userLogin = async (req, res, next) => {
     {
       id: response._id,
     },
-    secret
+    secret as string
   );
 
   res.json({
@@ -54,7 +64,11 @@ export const userLogin = async (req, res, next) => {
   });
 };
 
-export const availableCourses = async (req, res, next) => {
+export const availableCourses = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const courses = await Course.find().select("-isPublished -__v");
 
   if (courses.length === 0) {
@@ -68,8 +82,12 @@ export const availableCourses = async (req, res, next) => {
   });
 };
 
-export const purchase = async (req, res, next) => {
-  const userId = req.user.id;
+export const purchase = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const userId = req.token.id;
   const courseId = req.validatedParams.id;
 
   let course = await Course.findOne({ _id: courseId });
@@ -89,14 +107,18 @@ export const purchase = async (req, res, next) => {
   });
 };
 
-export const userPurchases = async (req, res, next) => {
-  const userId = req.user.id;
+export const userPurchases = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const userId = req.token.id;
 
   const purchases = await Purchases.find({ userId });
   if (purchases.length === 0) {
     return next(new AppError("No Purchases", 404));
   }
-  let ids = purchases.map((e) => e.courseId);
+  const ids = purchases.map((e) => e.courseId);
 
   const purchasedCourses = await Course.find({
     _id: { $in: ids },
@@ -108,7 +130,7 @@ export const userPurchases = async (req, res, next) => {
   });
 };
 
-// add refs here 
+// add refs here
 //fix the last route when free
 // i think the problem is that we are getting all the courses that user purchased and to get the course info
 

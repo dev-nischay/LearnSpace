@@ -11,8 +11,9 @@ export const Validate = (schema: ZodType, source: Source = Source.body) => {
     if (!parsedData.success) {
       let errors = parsedData?.error?.issues.map((e) => e.message);
       console.log(errors);
-      return next(new AppError(errors, 400));
+      return next(new AppError(String(errors), 400));
     }
+    // format validation errors later
 
     if (source === Source.body) {
       req[targetMap.body] = parsedData.data;

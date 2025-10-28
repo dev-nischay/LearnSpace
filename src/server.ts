@@ -9,7 +9,6 @@ import { connectDB } from "./utils/Db-connection.js";
 import { userRouter } from "./routes/user-router.js";
 const app = express();
 const PORT = process.env.port;
-console.log(PORT);
 
 app.use(logger);
 app.use(express.json());

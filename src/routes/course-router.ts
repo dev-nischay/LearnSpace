@@ -5,7 +5,7 @@ import {
   createCourseSchema,
   updateCourseSchema,
   urlValidator,
-} from "../validation/zod-schema.js";
+} from "../validation/course-schema.js";
 import asyncHandler from "express-async-handler";
 import {
   createCourse,
@@ -14,21 +14,21 @@ import {
   delCourse,
   getAllCourse,
 } from "../controllers/course-controller.js";
-
+import { Source } from "../types/enums.js";
 courseRouter.post(
   "/",
   Validate(createCourseSchema),
   asyncHandler(createCourse)
-); //working
+);
 courseRouter
   .route("/:id")
   .put(
-    Validate(urlValidator, "params"),
+    Validate(urlValidator, Source.params),
     Validate(updateCourseSchema),
-    asyncHandler(updateCourse) // working
+    asyncHandler(updateCourse)
   )
-  .patch(Validate(urlValidator, "params"), asyncHandler(publishCourse)) //working
-  .delete(Validate(urlValidator, "params"), asyncHandler(delCourse)) //working
-  .get(Validate(urlValidator, "params"), asyncHandler(getAllCourse));
+  .patch(Validate(urlValidator, Source.params), asyncHandler(publishCourse))
+  .delete(Validate(urlValidator, Source.params), asyncHandler(delCourse))
+  .get(asyncHandler(getAllCourse));
 
 export default courseRouter;
