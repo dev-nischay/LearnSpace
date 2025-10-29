@@ -36,8 +36,6 @@
     "jsx": "react-jsx",
     "verbatimModuleSyntax": true,
     "isolatedModules": true,
-    "allowJs": true,
-    "checkJs": false,
     "moduleDetection": "force",
     "skipLibCheck": true,
     "rootDir": "src",
