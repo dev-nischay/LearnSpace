@@ -10,7 +10,7 @@ export const createCourse = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { title, description, price } = req.validatedBody as createBody;
+  const { title, description, price, image } = req.validatedBody as createBody;
   const course = await Course.create({
     // add image latere here
     title,
