@@ -16,6 +16,7 @@ export const createCourse = async (
     title,
     description,
     price,
+    image,
     isPublished: false,
     createdBy: req.token.id,
   });
@@ -110,11 +111,9 @@ export const getAllCourse = async (
 ) => {
   const adminId = req.token.id;
 
-  const courseCreated = await Course.find({
-    $in: { createdBy: adminId },
-  }).populate("courseId");
-
-  // this will work after refs are implemented
+  const courseCreated = await Course.find({ createdBy: adminId })
+    .populate({ path: "createdBy", select: "-_id -__v -password" })
+    .select("-_id -__v");
 
   res.status(HttpStatus.Ok).json({
     status: true,

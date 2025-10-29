@@ -17,7 +17,7 @@ export const userRegister = async (
 
   const existing = await User.findOne({ username });
   if (existing) {
-    return next(new AppError("User alredy exists", 409));
+    return next(new AppError("User alredy exists", HttpStatus.Forbidden));
   }
 
   const hashedPass = await bcrypt.hash(password, 8);
@@ -70,7 +70,9 @@ export const availableCourses = async (
   res: Response,
   next: NextFunction
 ) => {
-  const courses = await Course.find().select("-isPublished -__v");
+  const courses = await Course.find()
+    .select("-isPublished -__v -_id")
+    .populate({ path: "createdBy", select: "-_id -__v -password" });
 
   if (courses.length === 0) {
     return next(
@@ -80,8 +82,8 @@ export const availableCourses = async (
 
   res.status(HttpStatus.Ok).json({
     status: true,
-    courses,
     message: "Available Courses",
+    courses,
   });
 };
 
@@ -117,24 +119,19 @@ export const userPurchases = async (
 ) => {
   const userId = req.token.id;
 
-  const purchases = await Purchases.find({ userId });
+  const purchases = await Purchases.find({ userId })
+    .select("-_id -__v -userId")
+    .populate({
+      path: "courseId",
+      select: "-_id -__v -_isPublished ",
+    })
+    .populate({ path: "creatorId", select: "-_id -__v  -password" });
   if (purchases.length === 0) {
     return next(new AppError("No Purchases", HttpStatus.NotFound));
   }
-  const ids = purchases.map((e) => e.courseId);
-
-  const purchasedCourses = await Course.find({
-    _id: { $in: ids },
-  }).select("-_id -isPublished -__v");
 
   res.status(HttpStatus.Ok).json({
     status: true,
-    purchasedCourses,
+    purchases,
   });
 };
-
-// add refs here
-//fix the last route when free
-// i think the problem is that we are getting all the courses that user purchased and to get the course info
-
-// completed

@@ -28,7 +28,8 @@ courseRouter
     asyncHandler(updateCourse)
   )
   .patch(Validate(urlValidator, Source.params), asyncHandler(publishCourse))
-  .delete(Validate(urlValidator, Source.params), asyncHandler(delCourse))
-  .get(asyncHandler(getAllCourse));
+  .delete(Validate(urlValidator, Source.params), asyncHandler(delCourse));
+
+courseRouter.get("/", asyncHandler(getAllCourse));
 
 export default courseRouter;
