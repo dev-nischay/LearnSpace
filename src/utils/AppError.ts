@@ -4,8 +4,10 @@ class AppError extends Error {
     public statusCode: number,
     public isOperational: boolean = true
   ) {
-    super(message), Error.captureStackTrace(this, this.constructor);
+    super(message);
   }
+
+  //  Error.captureStackTrace(this, this.constructor);
 }
 
 export default AppError;

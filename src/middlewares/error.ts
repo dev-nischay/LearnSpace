@@ -27,5 +27,9 @@ export const errorHandler = (
   } else {
     console.error(`Out of Bounds Error ❗️`);
     console.log(`Error:${err}`);
+    return res
+      .status(500)
+      .json({ error: "Something went Wrong please try again later" });
   }
 };
+// check the above else condition and fix
