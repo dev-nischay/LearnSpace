@@ -42,7 +42,7 @@ export const userLogin = async (
   const response = await User.findOne({ username });
 
   if (!response) {
-    return next(new AppError("User not Found", HttpStatus.NotFound));
+    return next(new AppError("Account not found", HttpStatus.NotFound));
   }
 
   const checkPassword = await bcrypt.compare(password, response.password);

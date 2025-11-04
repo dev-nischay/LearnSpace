@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useFetch } from "../../hooks/fetch";
-
+import Input from "../share/Input";
+import Button from "../share/Button";
 export const SignUp = () => {
   const navigate = useNavigate();
 
@@ -18,33 +19,37 @@ export const SignUp = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (formData.password !== formData.confirmPassword) {
       setError("Password do not match");
       return;
     }
-
     try {
-      // Only send username and password, not confirmPassword
       const { confirmPassword, ...credentials } = formData;
       await request(credentials);
-      // On successful registration, redirect to sign in
-      navigate("/signin");
-    } catch (err) {
-      // Error is handled by the hook and shown below
-    }
-  };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+      navigate("/signin");
+    } catch (err) {}
   };
+  const inputData = [
+    {
+      inputName: "username",
+      placeholder: "Username",
+      value: formData.username,
+    },
+    {
+      inputName: "password",
+      placeholder: "Password",
+      value: formData.password,
+    },
+    {
+      inputName: "confirmPassword",
+      placeholder: "Confirm Password",
+      value: formData.confirmPassword,
+    },
+  ];
 
   return (
-    <div className=" mt-32  mx-auto    md:max-w-md  ">
+    <div className=" mt-32  mx-auto    md:max-w-md  lg:max-w-lg xl:max-w-xl 2xl:max-w-xl">
       <div className=" border border-neutral-900 rounded-2xl ">
         <div className="p-3 px-8">
           <form
@@ -54,51 +59,20 @@ export const SignUp = () => {
             <h1 className="text-neutral-300/80 text-3xl text-center mb-1   tracking-wider">
               Create Account
             </h1>
-            <div>
-              <label htmlFor="username" className="sr-only">
-                Username
-              </label>
-              <input
-                id="username"
-                name="username"
-                type="text"
-                required
-                className="bg-transparent text-neutral-300   p-2 w-full outline-none px-6 border-b-[1px]   placeholder-neutral-300/50 border-neutral-900 rounded-lg"
-                placeholder="Username"
-                value={formData.username}
-                onChange={handleChange}
-              />
-            </div>
-            <div>
-              <label htmlFor="password" className="sr-only">
-                Password
-              </label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                required
-                className="bg-transparent text-neutral-300 p-2 w-full outline-none px-6 border-b-[1px]  placeholder-neutral-300/50 border-neutral-900 rounded-md"
-                placeholder="Password"
-                value={formData.password}
-                onChange={handleChange}
-              />
-            </div>
-            <div>
-              <label htmlFor="confirmPassword" className="sr-only">
-                Confirm Password
-              </label>
-              <input
-                id="confirmPassword"
-                name="confirmPassword"
-                type="password"
-                required
-                className="bg-transparent p-2 w-full  text-neutral-300 px-6 border-b-[1px] outline-none placeholder-neutral-300/50 border-neutral-900 rounded-md"
-                placeholder="Confirm Password"
-                value={formData.confirmPassword}
-                onChange={handleChange}
-              />
-            </div>
+
+            {inputData.map((e, i) => (
+              <div key={i}>
+                <label htmlFor={e.inputName} className="sr-only">
+                  {e.placeholder}
+                </label>
+                <Input
+                  name={e.inputName}
+                  placeholder={e.placeholder}
+                  value={e.value}
+                  setState={setFormData}
+                />
+              </div>
+            ))}
 
             {loading && (
               <div className="fixed h-screen backdrop-blur-md inset-0 flex justify-center items-center">
@@ -110,14 +84,7 @@ export const SignUp = () => {
             )}
 
             <div className="flex justify-center">
-              <button
-                type="submit"
-                disabled={loading}
-                className="text-black/80 bg-gradient-to-br   cursor-pointer mb-6 bg-white/50  mt-2 rounded-lg  px-10  py-2  transition-colors duration-150 hover:text-blac hover:bg-wh
-                 hover:transition-all"
-              >
-                {loading ? "Creating account..." : "Sign up"}
-              </button>
+              <Button type="submit">Signup</Button>
             </div>
           </form>
         </div>

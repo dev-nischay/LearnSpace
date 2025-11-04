@@ -1,10 +1,8 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { useFetch } from "../../hooks/fetch";
+import Button from "../share/Button";
 
 export const SignIn = () => {
-  const navigate = useNavigate();
-
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -19,14 +17,9 @@ export const SignIn = () => {
     e.preventDefault();
 
     try {
-      // Only send username and password, not confirmPassword
       const { ...credentials } = formData;
       await request(credentials);
-      // On successful registration, redirect to sign in
-      navigate("/signin");
-    } catch (err) {
-      // Error is handled by the hook and shown below
-    }
+    } catch (err) {}
   };
 
   const handleChange = (e) => {
@@ -89,14 +82,7 @@ export const SignIn = () => {
             )}
 
             <div className="flex justify-center">
-              <button
-                type="submit"
-                disabled={loading}
-                className="text-black/80 bg-gradient-to-br   cursor-pointer mb-6 bg-white/50  mt-2 rounded-lg  px-10  py-2  transition-colors duration-150 hover:text-blac hover:bg-wh
-                 hover:transition-all"
-              >
-                {loading ? "Loging In..." : "Log in "}
-              </button>
+              <Button type="submit">Signin</Button>
             </div>
           </form>
         </div>
