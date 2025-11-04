@@ -2,11 +2,14 @@ import { useState } from "react";
 import { useFetch } from "../../hooks/fetch";
 import Button from "../share/Button";
 import Input from "../share/Input";
+import { useAuthStore } from "../../store/authStore";
 export const SignIn = () => {
   const [formData, setFormData] = useState({
     username: "",
     password: "",
   });
+
+  const setLocalStorage = useAuthStore((state) => state.setToken);
 
   let { error, loading, request, setError } = useFetch("signin", {
     method: "POST",
@@ -18,7 +21,12 @@ export const SignIn = () => {
 
     try {
       const { ...credentials } = formData;
-      await request(credentials);
+      const data = await request(credentials);
+      console.log(data);
+      alert(data.message);
+      if (data.token) {
+        setLocalStorage(data.token);
+      }
     } catch (err) {}
   };
 

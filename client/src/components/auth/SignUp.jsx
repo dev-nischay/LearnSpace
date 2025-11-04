@@ -25,8 +25,10 @@ export const SignUp = () => {
     }
     try {
       const { confirmPassword, ...credentials } = formData;
-      await request(credentials);
-
+      const data = await request(credentials);
+      if (data.message) {
+        alert(data.message);
+      }
       navigate("/signin");
     } catch (err) {}
   };
