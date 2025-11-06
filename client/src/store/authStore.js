@@ -3,15 +3,21 @@ import { create } from "zustand";
 export const useAuthStore = create((set, get) => ({
   // Just store the token
   token: "",
+  creds: {
+    username: "",
+    password: "",
+  },
 
   // Set token on login
   setToken: (token) => {
-    set({ token });
-    localStorage.setItem("token", token);
+    set(() => ({ token }));
+    localStorage.setItem("Authorization", `Bearer ${token}`);
   },
 
-  // Get current token
-  getToken: () => get().token,
+  setCreds: (details) => {
+    set(() => ({ creds: details }));
+    console.log();
+  },
 
   // Clear token on logout
   logout: () => {
