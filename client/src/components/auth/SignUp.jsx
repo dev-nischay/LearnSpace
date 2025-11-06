@@ -5,7 +5,6 @@ import Input from "../share/Input";
 import Button from "../share/Button";
 export const SignUp = () => {
   const navigate = useNavigate();
-
   const [formData, setFormData] = useState({
     username: "",
     password: "",

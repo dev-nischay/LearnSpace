@@ -3,13 +3,16 @@ import { useFetch } from "../../hooks/fetch";
 import Button from "../share/Button";
 import Input from "../share/Input";
 import { useAuthStore } from "../../store/authStore";
+import { useNavigate } from "react-router-dom";
 export const SignIn = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: "",
     password: "",
   });
 
   const setLocalStorage = useAuthStore((state) => state.setToken);
+  const setUser = useAuthStore((state) => state.setCreds);
 
   let { error, loading, request, setError } = useFetch("signin", {
     method: "POST",
@@ -27,6 +30,8 @@ export const SignIn = () => {
       if (data.token) {
         setLocalStorage(data.token);
       }
+      setUser(credentials);
+      navigate("/home");
     } catch (err) {}
   };
 
