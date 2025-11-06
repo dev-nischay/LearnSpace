@@ -113,7 +113,7 @@ export const getAllCourse = async (
 
   const courseCreated = await Course.find({ createdBy: adminId })
     .populate({ path: "createdBy", select: "-_id -__v -password" })
-    .select("-__v");
+    .select(" -id -__v");
 
   res.status(HttpStatus.Ok).json({
     status: true,

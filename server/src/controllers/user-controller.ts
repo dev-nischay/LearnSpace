@@ -71,7 +71,7 @@ export const availableCourses = async (
   next: NextFunction
 ) => {
   const courses = await Course.find()
-    .select("-isPublished -__v -_id")
+    .select("-isPublished -__v ")
     .populate({ path: "createdBy", select: "-_id -__v -password" });
 
   if (courses.length === 0) {
