@@ -9,7 +9,7 @@ export const createCourseSchema = z.object({
   title: z
     .string()
     .min(1, "description cannot be empty")
-    .max(24, "Title too long!"),
+    .max(50, "Title too long!"),
   description: z.string().min(1, "description cannot be empty"),
   price: z.string().max(5, "Invalid Price"),
   image: z.string().min(20, "Invalid Image Url"),

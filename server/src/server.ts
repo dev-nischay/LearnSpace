@@ -13,7 +13,7 @@ import { userRouter } from "./routes/user-router.js";
 import cors from "cors";
 const app = express();
 const PORT = process.env.port;
-app.use(cors());
+app.use(cors({ origin: "*" }));
 app.use(logger);
 app.use(express.json());
 app.use("/api/v1/admin/", adminRouter);
