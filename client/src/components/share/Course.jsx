@@ -24,7 +24,7 @@ export default function CourseCard({
         </h2>
         <p className="text-gray-600 text-sm mt-2 line-clamp-2">{description}</p>
         <div className="m-2 flex justify-between items-center">
-          <span className="text-lg font-bold text-blue-600">₹{price}</span>
+          <span className="text-lg font-bold text-secondary">₹{price}</span>
           <button
             onClick={() => handlePurchase(courseId)}
             className="px-6 py-2 bg-blue-500 text-white rounded-md text-sm hover:bg-blue-600 transition-colors"
