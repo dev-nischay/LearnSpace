@@ -1,41 +1,52 @@
+import { Search } from "lucide-react";
+import { BookOpen } from "lucide-react";
+import { User } from "lucide-react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import { MobileNav } from "./MobileNavbar";
-import { Menu } from "lucide-react";
+
 export const Navbar = () => {
-  const [toggle, setToggle] = useState(false);
-
-  const socials = [
-    { name: "Signin", href: "/signin" },
-    { name: "Social", href: "https://x.com/nischaytwt" },
-    { name: "Github", href: "https://github.com/dev-nischay" },
-  ];
-
+  const [active, setActive] = useState(false);
   return (
-    <div className="text-neutral-300  h-full w-full  text-sm max-w-sm   mx-auto flex items-center border border-neutral-900  justify-between rounded-full mt-1  px-4 p-2 md:max-w-2xl lg:max-w-3xl xl:max-w-4xl 2xl:max-w-[60%]   xl:text-lg    md:px-6  lg:p-3 lg:px-8  2xl:p-5    2xl:px-10   ">
-      <Link to={"/"}>
-        <div>Learnspace</div>
-      </Link>
-      <div
-        className="lg:hidden lg:pointer-events-none"
-        onClick={() => setToggle((prev) => !prev)}
-      >
-        <Menu />
-        <MobileNav toggle={toggle} links={socials} />
+    <div className="fixed p-6 px-12 justify-between   inset-x-0 bg-[#0a0b10] border-secondary  border-b-[0.5px] h-18 flex items-center text-white ">
+      <div className="flex gap-2 items-center">
+        <div>
+          <BookOpen />
+        </div>
+        <div className="text-xl font-medium">LearnSpace</div>
       </div>
-      <div className="lg:flex gap-6 hidden">
-        {socials.map((e, index) => (
-          <a
-            target="_new"
-            className=" text-neutral-300 mr-2 transform hover:-translate-y-1  transition-all duration-200 "
-            href={e.href}
-            key={index}
-          >
-            {e.name}
-          </a>
-        ))}
+      <div className="flex gap-5  items-center ">
+        <div className="flex items-center bg-[#0a0b10] border rounded-lg  border-secondary   ">
+          <div className="pl-3 p-2">
+            <Search size={20} />
+          </div>
+          <input
+            type="text"
+            className=" flex-1 placeholder:font-thin  bg-transparent rounded-md h-8 outline-none"
+            placeholder="Search"
+          />
+        </div>
+        <div className=" relative h-10 w-10 bg-secondary rounded-full">
+          <User
+            color="black"
+            size={21}
+            className="absolute left-[0.6rem] top-2"
+            onClick={() => setActive((prev) => !prev)}
+          />
+          <UserTooltip active={active} />
+        </div>
       </div>
     </div>
+  );
+};
+
+const UserTooltip = ({ active }) => {
+  return (
+    <div
+      className={`absolute  border-neutral-700 border  rounded-md transform transition-all bg-[#171717] h-56  w-44 -inset-x-28 inset-y-16  duration-300 ${
+        active
+          ? "opacity-100 pointer-events-auto  -translate-y-2 "
+          : "opacity-0 pointer-events-none"
+      } `}
+    ></div>
   );
 };
 
