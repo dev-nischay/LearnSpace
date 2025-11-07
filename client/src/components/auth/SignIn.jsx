@@ -49,8 +49,8 @@ export const SignIn = () => {
   ];
 
   return (
-    <div className=" mt-32  mx-auto    md:max-w-md  ">
-      <div className=" border border-neutral-900 rounded-2xl ">
+    <div className=" mt-44 mx-auto    md:max-w-md  ">
+      <div className=" border border-primary rounded-2xl ">
         <div className="p-3 px-8">
           <form
             className="mt-8 space-y-6 flex flex-col gap-2   "
