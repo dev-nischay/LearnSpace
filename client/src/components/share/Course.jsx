@@ -1,23 +1,34 @@
+import { useCartStore } from "../../store/cartStore";
+
 export default function CourseCard({
   title,
   description,
   price,
   author,
   courseId,
+  image,
 }) {
+  const addCourse = useCartStore((state) => state.addToCart);
+
   const handlePurchase = (courseId) => {
     alert(`You Purchased ${courseId} `);
+
+    addCourse({
+      courseId,
+      price,
+      image,
+      title,
+      description,
+      author,
+    });
+
     // use purchase store and send the use selected id with title for frontend visibillity for payment page
     // no need to send the whole obj
   };
 
   return (
-    <div className="bg-black/50   rounded-xl shadow-md overflow-hidden hover:shadow-lg  w-full max-w-sm  transform hover:-translate-y-2 transition-all ">
-      <img
-        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCeyZzhrU3BVJUafs_J_lVw34zozqU1nMU8w&s"
-        alt={"ts"}
-        className="w-full h-36 object-cover"
-      />
+    <div className="bg-black/50  rounded-xl shadow-md overflow-hidden hover:shadow-lg  w-full max-w-sm  transform hover:-translate-y-2 transition-all ">
+      <img src={image} alt={"ts"} className="w-full h-40 object-cover" />
       <div className="p-4">
         <h2 className="text-lg font-semibold line-clamp-1 text-white">
           {title}
