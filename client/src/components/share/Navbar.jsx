@@ -2,11 +2,12 @@ import { Search } from "lucide-react";
 import { BookOpen } from "lucide-react";
 import { User } from "lucide-react";
 import { useState } from "react";
-
+import { ShoppingBag } from "lucide-react";
+import { Notify } from "./notifiy";
 export const Navbar = () => {
   const [active, setActive] = useState(false);
   return (
-    <div className="fixed p-6 px-12 justify-between   inset-x-0 bg-[#0a0b10] border-secondary  border-b-[0.5px] h-18 flex items-center text-white ">
+    <div className="fixed p-6 px-12 justify-between z-50   inset-x-0 bg-[#0a0b10] border-secondary  border-b-[0.5px] h-18 flex items-center text-white ">
       <div className="flex gap-2 items-center">
         <div>
           <BookOpen />
@@ -33,6 +34,14 @@ export const Navbar = () => {
           />
           <UserTooltip active={active} />
         </div>
+        <div className=" relative bg-secondary rounded-full h-10 w-10 ">
+          <ShoppingBag
+            color="black"
+            size={21}
+            className="absolute left-[0.6rem] top-2"
+          />
+          <Notify />
+        </div>
       </div>
     </div>
   );
@@ -41,7 +50,7 @@ export const Navbar = () => {
 const UserTooltip = ({ active }) => {
   return (
     <div
-      className={`absolute  border-neutral-700 border  rounded-md transform transition-all bg-[#171717] h-56  w-44 -inset-x-28 inset-y-16  duration-300 ${
+      className={`absolute  border-neutral-700 border  rounded-md transform transition-all z-50 bg-[#171717] h-56  w-44 -inset-x-28 inset-y-16 duration-300 ${
         active
           ? "opacity-100 pointer-events-auto  -translate-y-2 "
           : "opacity-0 pointer-events-none"
