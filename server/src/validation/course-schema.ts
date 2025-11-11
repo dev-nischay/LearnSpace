@@ -27,5 +27,11 @@ export const updateCourseSchema = z
     message: "Changes cannot be empty",
   });
 
+export const purchaseMultipleCourses = z.object({
+  courseIds: z.array(z.string()),
+  totalAmount: z.number(),
+});
+
 export type createBody = z.infer<typeof createCourseSchema>;
 export type updateBody = z.infer<typeof updateCourseSchema>;
+export type purchaseBody = z.infer<typeof purchaseMultipleCourses>;
