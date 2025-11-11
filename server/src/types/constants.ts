@@ -8,3 +8,12 @@ export type Update = {
   description?: string;
   price?: number;
 };
+
+export type Course = [
+  {
+    _id: string;
+    createdBy: {
+      _id: string;
+    };
+  }
+];
