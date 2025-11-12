@@ -43,6 +43,6 @@ Think of it as a full-featured online learning marketplace.
 
 ### Backend
 ```bash
-cd backend
+cd server
 npm install
 npm run dev
