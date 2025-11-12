@@ -5,7 +5,9 @@ export const Notify = () => {
 
   return (
     <div className="absolute bg-red-500 w-4 h-4 rounded-full -top-1  -right-1">
-      <div className="absolute right-[5px] text-[10px] ">{cartCounter}</div>
+      <div className="absolute right-[5px] top-[1px] text-[9px] ">
+        {cartCounter}
+      </div>
     </div>
   );
 };
