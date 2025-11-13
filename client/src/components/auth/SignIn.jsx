@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useFetch } from "../../hooks/fetch";
 import Button from "../share/Button";
-import Input from "../share/Input";
+import Input from "./Input";
 import { useAuthStore } from "../../store/authStore";
 import { useNavigate } from "react-router-dom";
 export const SignIn = () => {
@@ -14,7 +14,7 @@ export const SignIn = () => {
   const setLocalStorage = useAuthStore((state) => state.setToken);
   const setUser = useAuthStore((state) => state.setCreds);
 
-  let { error, loading, request, setError } = useFetch("signin", {
+  let { error, loading, request } = useFetch("signin", {
     method: "POST",
     requiresAuth: false,
   });
@@ -52,6 +52,7 @@ export const SignIn = () => {
     <div className=" mt-44 mx-auto    md:max-w-md  ">
       <div className=" border border-primary rounded-2xl ">
         <div className="p-3 px-8">
+          {/* Sign in form */}
           <form
             className="mt-8 space-y-6 flex flex-col gap-2   "
             onSubmit={handleSubmit}

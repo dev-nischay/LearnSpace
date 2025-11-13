@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useFetch } from "../../hooks/fetch";
-import Input from "../share/Input";
+import Input from "./Input";
 import Button from "../share/Button";
 export const SignUp = () => {
   const navigate = useNavigate();
@@ -50,9 +50,10 @@ export const SignUp = () => {
   ];
 
   return (
-    <div className=" mt-44 mx-auto    md:max-w-md  lg:max-w-lg xl:max-w-xl 2xl:max-w-xl">
+    <div className=" mt-36 mx-auto    md:max-w-md  lg:max-w-lg xl:max-w-xl 2xl:max-w-xl">
       <div className=" border border-primary rounded-2xl ">
         <div className="p-3 px-8">
+          {/* Sign up form */}
           <form
             className="mt-8 space-y-6 flex flex-col gap-2   "
             onSubmit={handleSubmit}
