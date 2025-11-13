@@ -27,7 +27,7 @@ export default function CourseCard({
   };
 
   return (
-    <div className="bg-black/50  rounded-xl shadow-md overflow-hidden hover:shadow-lg  w-full max-w-sm  transform hover:-translate-y-2 transition-all ">
+    <div className="bg-black/50  rounded-xl shadow-md overflow-hidden hover:shadow-lg  w-full max-w-[22rem] border border-secondary hover:border-gray-700  transform hover:-translate-y-2 transition-all ">
       <img src={image} alt={"ts"} className="w-full h-40 object-cover" />
       <div className="p-4">
         <h2 className="text-lg font-semibold line-clamp-1 text-white">

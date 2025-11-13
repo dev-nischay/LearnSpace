@@ -10,7 +10,7 @@ export const Home = () => {
   const setCourses = usePurchaseStore((state) => state.setCourses);
   const clearCart = useCartStore((state) => state.clearCart);
   const data = useAuthStore((state) => state.creds);
-  const { error, request, loading } = useFetch("courses", {
+  const { request, loading } = useFetch("courses", {
     method: "GET",
     requiresAuth: true,
   });
@@ -29,22 +29,18 @@ export const Home = () => {
   }, []);
 
   return (
-    <div className="min-h-screen w-full lg:p-8 xl:max-w-[90rem] mx-auto">
+    <div className="min-h-screen w-full lg:p-8 lg:max-w-5xl xl:max-w-[90rem] mx-auto">
       {loading && (
         <div className="fixed h-screen backdrop-blur-md text-white inset-0 flex justify-center items-center">
           Loading...
         </div>
       )}
-      <h1 className="text-white m-2 mb-10 text-xl font-semibold md:text-2xl lg:text-3xl ">
-        Welcome {data.username}{" "}
-        <button
-          onClick={() => clearCart()}
-          className="bg-red-500 px-2  rounded-lg text-black"
-        >
-          clearCart test
-        </button>
+      {/* Grettings */}
+      <h1 className="text-white m-2 mb-5 text-xl font-semibold md:text-2xl lg:text-3xl ">
+        Good Afternoon {data.username}
       </h1>
 
+      {/* Courses Grid */}
       <div className="grid grid-cols-1 gap-12 w-full  mx-auto  md:grid-cols-2 lg:grid-cols-3">
         {courses.map((e, i) => (
           <CourseCard
