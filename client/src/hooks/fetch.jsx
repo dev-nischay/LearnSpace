@@ -18,7 +18,7 @@ export const useFetch = (endpoint, options) => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const token = useAuthStore((state) => state.token);
+  const token = localStorage.getItem("Authorization");
 
   const reset = () => {
     setData(null);
@@ -41,7 +41,7 @@ export const useFetch = (endpoint, options) => {
       };
 
       if (options.requiresAuth && token) {
-        headers.Authorization = `Bearer ${token}`;
+        headers.Authorization = `${token}`;
       }
 
       const response = await fetch(`${API_BASE_URL}${endpoint}`, {
