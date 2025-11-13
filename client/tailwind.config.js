@@ -1,8 +1,22 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+
   theme: {
     extend: {
+      height: {
+        18: "4.5rem",
+      },
+      width: {
+        18: "4.5rem",
+      },
+      colors: {
+        secondary: "rgba(255, 255, 255, 0.8)",
+      },
+      borderColor: {
+        primary: "#171717",
+        secondary: "#262626",
+      },
       keyframes: {
         glow1: {
           "0%, 100%": { transform: "translate(0, 0) scale(1)" },
