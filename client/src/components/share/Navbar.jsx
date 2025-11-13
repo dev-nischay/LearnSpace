@@ -6,10 +6,11 @@ import { useState } from "react";
 import { ShoppingBag } from "lucide-react";
 import { Notify } from "./notifiy";
 import { UserDropDown } from "./UserDropDown";
+import { useNavigate } from "react-router-dom";
 
 export const Navbar = () => {
   const [active, setActive] = useState(false);
-
+  const navigate = useNavigate();
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -28,25 +29,32 @@ export const Navbar = () => {
           : "opacity-0 pointer-events-none -translate-y-10 "
       } `}
     >
-      <div className="flex items-center justify-between pt-4  xl:max-w-[90rem] mx-auto">
-        <div className="flex gap-2 items-center ">
+      {/* Logo  */}
+      <div className="flex items-center justify-between pt-4 px-10   xl:max-w-[90rem] mx-auto">
+        <div
+          onClick={() => navigate("/")}
+          className="flex gap-2 items-center  cursor-pointer "
+        >
           <div>
             <BookOpen />
           </div>
-          <div className="text-xl font-medium">LearnSpace</div>
+          <div className="text-xl font-medium ">LearnSpace</div>
         </div>
+
+        {/* Nav Search */}
         <div className="flex gap-5  items-center ">
-          <div className="flex items-center bg-[#0a0b10] border rounded-lg  border-secondary   ">
+          <div className="flex items-center bg-[#0a0b10] border rounded-lg  border-secondary hover:border-gray-700   ">
             <div className="pl-3 p-2">
               <Search size={20} />
             </div>
             <input
               type="text"
-              className=" flex-1 placeholder:font-thin  bg-transparent rounded-md h-8 outline-none"
+              className=" flex-1 placeholder:font-thin   bg-transparent rounded-md h-8 outline-none"
               placeholder="Search"
             />
           </div>
-          <div className=" relative h-10 w-10 bg-secondary  rounded-full">
+          {/* User icon */}
+          <div className=" relative h-10 w-10 bg-secondary transition-all cursor-pointer  hover:bg-neutral-500 rounded-full">
             <User
               color="black"
               size={21}
@@ -55,7 +63,11 @@ export const Navbar = () => {
             />
             <UserDropDown active={active} />
           </div>
-          <div className=" relative bg-secondary rounded-full h-10 w-10 ">
+          {/* Cart icon */}
+          <div
+            onClick={() => navigate("/payment")}
+            className=" relative bg-secondary rounded-full h-10 w-10 transition-all cursor-pointer  hover:bg-neutral-500 "
+          >
             <ShoppingBag
               color="black"
               size={21}
