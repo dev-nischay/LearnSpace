@@ -10,21 +10,24 @@ export const useCartStore = create(
       addToCart: (course) =>
         set((state) => ({
           cart: [...state.cart, course],
-          itemsCount: state.itemsCount + 1,
+          itemsCount: state.cart.length + 1,
         })),
 
       removeFromCart: (courseId) =>
         set((state) => ({
-          cart: [state.cart.filter((e) => e._id !== courseId)],
+          cart: state.cart.filter((e) => e.courseId != courseId),
+          itemsCount: state.cart.length - 1,
         })),
 
       clearCart: () => set(() => ({ cart: [], itemsCount: 0 })),
     }),
+
     {
       name: "cart-store",
       storage: createJSONStorage(() => localStorage),
       partialize: (state) => ({
         cart: [...state.cart],
+        itemsCount: state.itemsCount,
       }),
     }
   )
