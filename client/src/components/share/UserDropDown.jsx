@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 
 export const UserDropDown = ({ active }) => {
   const logout = useAuthStore((state) => state.logout);
+  const username = useAuthStore((state) => state.creds.username);
   const navigate = useNavigate();
 
   const items = [
@@ -18,7 +19,7 @@ export const UserDropDown = ({ active }) => {
   ];
 
   const handleClick = () => {
-    logout();
+    if (username.length > 0) logout();
     navigate("/signin");
   };
 
@@ -46,7 +47,7 @@ export const UserDropDown = ({ active }) => {
           className="flex  items-center gap-2 hover:bg-secondary/20 p-1 mt-2 transition-color duration-150  rounded-md hover:text-red-500 "
         >
           <LogOut size={18} />
-          Logout
+          {username ? "Logout " : "Login"}
         </div>
       </div>
     </div>
