@@ -36,7 +36,7 @@ export const Home = () => {
         </div>
       )}
       {/* Grettings */}
-      <h1 className="text-white m-2 mb-5 text-xl font-semibold md:text-2xl lg:text-3xl ">
+      <h1 className="text-white  m-2 mb-5 text-xl font-semibold sm:text-xl  md:text-2xl lg:text-3xl  mt-8 md:mt-6 lg:mt-5">
         Good Afternoon {data.username}
       </h1>
 

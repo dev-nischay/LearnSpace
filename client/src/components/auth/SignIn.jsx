@@ -32,7 +32,9 @@ export const SignIn = () => {
       }
       setUser(credentials);
       navigate("/home");
-    } catch (err) {}
+    } catch (err) {
+      alert(err.message);
+    }
   };
 
   const inputData = [
@@ -57,7 +59,7 @@ export const SignIn = () => {
             className="mt-8 space-y-6 flex flex-col gap-2   "
             onSubmit={handleSubmit}
           >
-            <h1 className="text-neutral-300/80 text-3xl text-center mb-1   tracking-wider">
+            <h1 className="text-neutral-300/80 sm:text-lg md:text-2xl lg:text-3xl text-center mb-1   tracking-wider">
               Login Account
             </h1>
 

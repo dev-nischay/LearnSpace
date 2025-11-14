@@ -37,8 +37,8 @@ export default function PaymentPage() {
         const res = await request(body);
         console.log(res);
         setPurchases(cartItems);
-        alert(res.message);
         clearCart();
+        alert(res.message);
       } catch (error) {
         alert(error.message);
         console.log(error);
@@ -51,7 +51,9 @@ export default function PaymentPage() {
   return (
     <div className="p-4 md:p-8">
       <div>
-        <h1 className="text-4xl font-bold text-white mb-8">Shopping Cart</h1>
+        <h1 className="text-4xl font-bold text-white mt-8 mb-8 md:mt-6 lg:mt-5">
+          Shopping Cart
+        </h1>
 
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Left Side - Cart Items */}
