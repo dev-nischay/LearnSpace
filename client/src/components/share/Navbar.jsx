@@ -7,11 +7,12 @@ import { ShoppingBag } from "lucide-react";
 import { Notify } from "./notifiy";
 import { UserDropDown } from "./UserDropDown";
 import { useNavigate } from "react-router-dom";
-
+import { MobileNav } from "./MobileSearch";
 export const Navbar = () => {
   const [active, setActive] = useState(false);
-  const navigate = useNavigate();
   const [isVisible, setIsVisible] = useState(false);
+  const [nav, setNav] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -23,14 +24,23 @@ export const Navbar = () => {
 
   return (
     <div
-      className={`fixed   z-40   inset-x-0 bg-[#0a0b10] border-secondary  border-b-[0.5px] h-18  text-white  transition-all duration-300  transform  ${
+      className={`fixed   z-40 px-3  inset-x-0 bg-[#0a0b10] border-secondary  border-b-[0.5px] h-18  text-white  transition-all duration-300  transform  ${
         isVisible
           ? "opacity-100 pointer-events-auto translate-y-0 "
           : "opacity-0 pointer-events-none -translate-y-10 "
       } `}
     >
       {/* Logo  */}
-      <div className="flex items-center justify-between pt-4 px-10   xl:max-w-[90rem] mx-auto">
+      <div className="flex items-center justify-between pt-4    xl:max-w-[90rem] mx-auto">
+        <div
+          className={
+            nav
+              ? "opacity-100 pointer-events-auto"
+              : "opacity-0 pointer-events-none"
+          }
+        >
+          <MobileNav setToggle={setNav} toggle={nav} />
+        </div>
         <div
           onClick={() => navigate("/")}
           className="flex gap-2 items-center  cursor-pointer "
@@ -44,12 +54,15 @@ export const Navbar = () => {
         {/* Nav Search */}
         <div className="flex gap-5  items-center ">
           <div className="flex items-center bg-[#0a0b10] border rounded-lg  border-secondary hover:border-gray-700   ">
-            <div className="pl-3 p-2">
-              <Search size={20} />
+            <div
+              onClick={() => setNav((prev) => !prev)}
+              className="p-3  rounded-full md:rounded-none "
+            >
+              <Search size={18} />
             </div>
             <input
               type="text"
-              className=" flex-1 placeholder:font-thin   bg-transparent rounded-md h-8 outline-none"
+              className=" flex-1 placeholder:font-thin hidden md:flex  bg-transparent rounded-md h-8 outline-none"
               placeholder="Search"
             />
           </div>
