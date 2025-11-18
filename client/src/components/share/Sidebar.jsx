@@ -4,7 +4,7 @@ import { Bookmark } from "lucide-react";
 import { CreditCard } from "lucide-react";
 import { useEffect, useState } from "react";
 import { HomeIcon } from "lucide-react";
-
+import { SidebarClose } from "lucide-react";
 export const Sidebar = () => {
   const [open, setOpen] = useState(false);
   const [slide, setSlide] = useState(false);
@@ -35,7 +35,7 @@ export const Sidebar = () => {
             onClick={() => setOpen((prev) => !prev)}
             className=" 2xl:hover:bg-secondary/20 p-3 rounded-md"
           >
-            <SidebarOpen />
+            {open ? <SidebarOpen /> : <SidebarClose />}
           </div>
           {
             <h1
